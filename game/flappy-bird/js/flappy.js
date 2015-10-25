@@ -1,4 +1,4 @@
-var game = new Phaser.Game(288,505,Phaser.AUTO,'game'); //实例化一个Phaser的游戏实例
+var game = new Phaser.Game(Phaser.width,Phaser.height,Phaser.AUTO,'game'); //实例化一个Phaser的游戏实例
 
 game.States = {}; //创建一个对象来存放要用到的state
 game.States.boot = function(){ this.preload = function(){
@@ -39,8 +39,8 @@ game.States.menu = function(){ this.create = function(){
         //ground.autoScroll(-100,0); //让地面动起来
 
         var titleGroup = game.add.group(); //创建存放标题的组
-        titleGroup.create(0,0,'title'); //通过组的create方法创建标题图片并添加到组里
-        var bird = titleGroup.create(190, 10, 'bird'); //创建bird对象并添加到组里
+        titleGroup.create(game.width/2-140,0,'title'); //通过组的create方法创建标题图片并添加到组里
+        var bird = titleGroup.create(game.width/2+50, 10, 'bird'); //创建bird对象并添加到组里
         bird.animations.add('fly'); //给鸟添加动画
         bird.animations.play('fly',12,true); //播放动画
         titleGroup.x = 35; //调整组的水平位置
@@ -59,7 +59,7 @@ game.States.play = function(){
         this.pipeGroup = game.add.group();//用于存放管道的组，后面会讲到
         this.pipeGroup.enableBody = true;
         this.ground = game.add.tileSprite(0,game.height-112,game.width,112,'ground'); //地板，这里先不用移动，游戏开始后再动
-        this.bird = game.add.sprite(50,150,'bird'); //鸟
+        this.bird = game.add.sprite(100,150,'bird'); //鸟
         this.bird.animations.add('fly');//添加动画
         this.bird.animations.play('fly',12,true);//播放动画
         this.bird.anchor.setTo(0.5, 0.5); //设置中心点
@@ -83,7 +83,7 @@ game.States.play = function(){
         this.scoreSound= game.add.sound('score_sound');//得分的音效
         this.hitPipeSound=game.add.sound('hit_pipe_sound'); //撞击管道的音效
         this.hitGroundSound=game.add.sound('hit_ground_sound'); //撞击地面的音效
-        this.scoreText = game.add.bitmapText(game.world.centerX-20, 30, 'flappy_font', '0', 36);
+        
         } //点击屏幕后正式开始游戏
 
         this.statrGame = function(){
@@ -97,7 +97,7 @@ game.States.play = function(){
     this.bird.body.gravity.y = 1150; //给鸟设一个重力
     this.readyText.destroy(); //去除 'get ready' 图片
     this.playTip.destroy(); //去除 '玩法提示 图片
-
+    this.scoreText = game.add.bitmapText(game.world.centerX-20, 30, 'flappy_font', '0', 36);
     game.input.onDown.add(this.fly, this); //给鼠标按下事件绑定鸟的飞翔动作
     game.time.events.start(); //启动时钟事件，开始制造管道
 }
